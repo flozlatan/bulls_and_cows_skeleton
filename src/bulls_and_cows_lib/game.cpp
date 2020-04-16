@@ -106,7 +106,8 @@ namespace bulls_and_cows {
             display_board(game_options, Board);
             win = is_win(game_options, Board);
             end = is_end_of_game(game_options, Board);
-            result = remove_incompatible_codes_from_possible_solutions(test, Codes);
+            result = remove_incompatible_codes_from_possible_solutions2(test, Codes);
+            //std::this_thread::sleep_for(std::chrono::seconds(2));
             if (result == 1)
             {
                 win = true;
@@ -139,28 +140,24 @@ namespace bulls_and_cows {
             play_game();
             break;
         case GameOptionsMenuChoice::ModifyMaximumNumberOfAttempts:
-            std::cout << "\nWill arrive soon\n";
-            play_game();
+            std::cout << "\nModification of number of attempts\n";
+            change_Number_attempt(game_options, std::cin);
             break;
         case GameOptionsMenuChoice::ModifyNumberOfCharactersPerCode:
-            std::cout << "\nWill arrive soon\n";
-            play_game();
+            std::cout << "\nModification of character per code\n";
+            change_Number_Characters(game_options, std::cin);
             break;
         case GameOptionsMenuChoice::ModifyMinimumAllowedCharacter:
-            std::cout << "\nWill arrive soon\n";
-            play_game();
-            break;
-        case GameOptionsMenuChoice::ModifyMaximumAllowedCharacter:
-            std::cout << "\nWill arrive soon\n";
-            play_game();
+            std::cout << "\nModify the range of character\n";
+            change_Char(game_options, std::cin);
             break;
         case GameOptionsMenuChoice::SaveOptions:
-            std::cout << "\nWill arrive soon\n";
-            play_game();
+            std::cout << "\nSauvegarder les options\n";
+            save_game_options(game_options);
             break;
         case GameOptionsMenuChoice::LoadOptions:
-            std::cout << "\nWill arrive soon\n";
-            play_game();
+            std::cout << "\nCharger des options\n";
+            load_file(game_options);
             break;
         }
         

@@ -58,11 +58,8 @@ namespace bulls_and_cows {
         int nbr_char = game_options.maximum_allowed_character - game_options.minimum_allowed_character +1;
         int nbr_case = 1;
         //std::cout << "nbr case:" << nbr_case;
+        nbr_case = pow(game_options.number_of_characters_per_code, nbr_char);
 
-        for (unsigned int i = 0; i < game_options.number_of_characters_per_code; i++)
-        {
-            nbr_case = nbr_case * nbr_char ;        //probleme avec la fonction pow() donc puissance code a la dur
-        }
         //std::cout << "nbr possibilities:" << nbr_case << "\n";
         for (unsigned int i = 0; i <= game_options.number_of_characters_per_code; i++)
         {                   //La liste C va etre utilise comme un entier dans la base de valeur égale à notre nombre de solutions
@@ -118,9 +115,9 @@ namespace bulls_and_cows {
         for (int i = 0; i < size; i++)
         {
             //std ::cout << "Nieme tour:" << i << "\n";
-            attempt = compare_attempt_with_secret_code(attempt_and_feedback.attempt,possible_solutions.codes[i]);   //On compare les resultats d'une combinaison choisi au hasard
-            if (attempt.bulls != attempt_and_feedback.feedback.bulls ||                                             //avec le code secret, puis on teste tous les codes avec cette meme combinasion
-                attempt.cows != attempt_and_feedback.feedback.cows)                                                 //Si on trouve un resultat (feedback) different que celui obtenu avec le Code secret
+            //attempt = compare_attempt_with_secret_code(attempt_and_feedback.attempt,possible_solutions.codes[i]);   //On compare les resultats d'une combinaison choisi au hasard
+            if (compare_attempt_with_secret_code(attempt_and_feedback.attempt,possible_solutions.codes[i]).bulls != attempt_and_feedback.feedback.bulls ||                                             //avec le code secret, puis on teste tous les codes avec cette meme combinasion
+                compare_attempt_with_secret_code(attempt_and_feedback.attempt, possible_solutions.codes[i]).cows != attempt_and_feedback.feedback.cows) // Si on trouve un resultat (feedback) different que celui obtenu avec le Code secret
             {                                                                                                       //on sait que la combinaison n'est pas le code secret on peut donc la supprimer
                 possible_solutions.codes.erase(possible_solutions.codes.begin() + i);
                 size = size - 1;    //on reduit la taille du tableau car en supprimant la case il faut retrancher un iteration a la boucle for
@@ -128,10 +125,58 @@ namespace bulls_and_cows {
             }
             else
             {
-                std::cout << possible_solutions.codes[i].value << "\n";
+                //std::cout << possible_solutions.codes[i].value << "\n";
             }
         }
         std::cout << "Nbr de combinaison restantes" << size << "\n";
         return size;
+    }
+
+    int remove_incompatible_codes_from_possible_solutions2(const AttemptAndFeedback& attempt_and_feedback,
+                                                          PossibleSolutions& possible_solutions)
+    {
+        //int size = static_cast<int>(possible_solutions.codes.size()); // on parcours toute la liste des combinaisons
+        int i = 0;
+        Feedback attempt;
+        while (i < possible_solutions.codes.size())
+        {
+            // std ::cout << "Nieme tour:" << i << "\n";
+            attempt = compare_attempt_with_secret_code(attempt_and_feedback.attempt,possible_solutions.codes[i]);
+            //On compare les resultats d'une combinaison choisi au hasard
+            if (attempt.bulls!=attempt_and_feedback.feedback.bulls // avec le code secret, puis on teste tous les codes avec cette meme combinasion
+                ) // Si on trouve un resultat (feedback) different que celui obtenu avec le Code secret
+            {                  // on sait que la combinaison n'est pas le code secret on peut donc la supprimer
+                possible_solutions.codes.erase(possible_solutions.codes.begin() + i);
+                //size = size - 1; // on reduit la taille du tableau car en supprimant la case il faut retrancher un
+                                 // iteration a la boucle for
+                //i = i - 1; // on doit faire cela sinon les cases suivant celles supprimées ne seraient pas étudiées.
+            }
+            else
+            {              
+                if (attempt.cows != attempt_and_feedback.feedback.cows)
+                {
+                    possible_solutions.codes.erase(possible_solutions.codes.begin() + i);
+                }
+                else
+                {
+                    // std::cout << possible_solutions.codes[i].value << "\n";
+                    i++;
+                }
+                
+            }
+        }
+        std::cout << "Nbr de combinaison restantes" << i << "\n";
+        return i;
+    }
+
+    int pow(int n, int x)
+    {   
+        int nbr_case = {1};
+        for ( int i = 0; i < n ; i++)
+        {
+            nbr_case = nbr_case * x ; // probleme avec la fonction pow() donc puissance code a la dur
+        }
+        return nbr_case;
+    
     }
 } // namespace bulls_and_cows

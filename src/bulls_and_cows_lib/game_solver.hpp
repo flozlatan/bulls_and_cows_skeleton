@@ -21,5 +21,8 @@ namespace bulls_and_cows {
 
     int remove_incompatible_codes_from_possible_solutions(const AttemptAndFeedback& attempt_and_feedback,
                                                            PossibleSolutions& possible_solutions);
+    int pow(int n, int x);
+    int remove_incompatible_codes_from_possible_solutions2(const AttemptAndFeedback& attempt_and_feedback,
+                                                           PossibleSolutions& possible_solutions);
 
 } // namespace bulls_and_cows
